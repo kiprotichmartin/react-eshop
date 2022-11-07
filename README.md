@@ -1,4 +1,9 @@
-# Getting Started with Create React App
+# This is a simple E-Commerce React application to consume an API and display it.
+The API is from [Fake API store](https://fakestoreapi.com/).
+
+
+# REACT JS README
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
