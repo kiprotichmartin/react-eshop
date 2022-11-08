@@ -7,90 +7,105 @@ function Products() {
   const [productsArray, setProductsArray] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
-  useEffect(function allProducts() {
+  function allProducts() {
     fetch("https://fakestoreapi.com/products/")
       .then((res) => res.json())
       .then((json) => {
         setData(json);
         setProductsArray(json);
       });
-  }, []);
-
-  // function allProducts() {
-  //   fetch("https://fakestoreapi.com/products/")
-  //     .then((res) => res.json())
-  //     .then((json) => {
-  //       setData(json);
-  //       setProductsArray(json);
-  //     });
-  // }
-
-  function allProducts2() {
-    setData(productsArray);
   }
 
-  function ascOrder() {
-    fetch("https://fakestoreapi.com/products?sort=asc")
-      .then((res) => res.json())
-      .then((json) => {
-        setData(json);
-      });
+  useEffect(allProducts, []);
+
+  async function allProducts2() {
+    await setData(productsArray);
+    console.log(data);
   }
 
-  function descOrder() {
-    fetch("https://fakestoreapi.com/products?sort=desc")
-      .then((res) => res.json())
-      .then((json) => {
-        setData(json);
-      });
+  async function ascOrder(data) {
+    let newArr = data.sort((a, b) => {
+      return a.id - b.id;
+    });
+    await setData(newArr);
+    console.log(newArr);
+  }
+
+  async function descOrder(data) {
+    let newArr = data.sort((a, b) => {
+      return b.id - a.id;
+    });
+    await setData(newArr);
+    console.log(newArr);
   }
 
   function menClothing() {
-    fetch("https://fakestoreapi.com/products/category/men%27s%20clothing")
-      .then((res) => res.json())
-      .then((json) => {
-        setData(json);
-      });
+    // allProducts2();
+    let newArr = productsArray.filter(
+      (item) => item.category === "men's clothing"
+    );
+    setData(newArr);
+    console.log(newArr);
+    // ascOrder(newArr);
+    // descOrder(newArr);
   }
 
   function jewelery() {
-    fetch("https://fakestoreapi.com/products/category/jewelery")
-      .then((res) => res.json())
-      .then((json) => {
-        setData(json);
-      });
+    // allProducts2();
+    let newArr = productsArray.filter((item) => item.category === "jewelery");
+    setData(newArr);
+    console.log(newArr);
+    // const asc = document.getElementById('asc');
+    // const desc = document.getElementById('desc');
+    // asc.addEventListener("click", ascOrder(newArr))
+    // desc.addEventListener("click", descOrder(newArr));
+    // ascOrder(newArr);
+    // descOrder(newArr);
   }
 
   function electronics() {
-    fetch("https://fakestoreapi.com/products/category/electronics")
-      .then((res) => res.json())
-      .then((json) => {
-        setData(json);
-      });
+    // allProducts2();
+    let newArr = productsArray.filter(
+      (item) => item.category === "electronics"
+    );
+    setData(newArr);
+    console.log(newArr);
+    // ascOrder(newArr);
+    // descOrder(newArr);
   }
 
   function womenClothing() {
-    fetch("https://fakestoreapi.com/products/category/women%27s%20clothing")
-      .then((res) => res.json())
-      .then((json) => {
-        setData(json);
-      });
+    // allProducts2();
+    let newArr = productsArray.filter(
+      (item) => item.category === "women's clothing"
+    );
+    setData(newArr);
+    console.log(newArr);
+    // ascOrder(newArr);
+    // descOrder(newArr);
   }
 
   function deleteItem(id) {
-    let newArr = data.filter((item) => item.id !== id);
-    console.log(newArr);
+    let newArr = productsArray.filter((item) => item.id !== id);
+    // console.log(newArr);
+    setProductsArray(newArr);
     setData(newArr);
   }
 
   return (
     <div className="App">
+      <Modal
+        array={data}
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+      />
+
       <header className="App-header">
         <h1>E-SHOP</h1>
       </header>
+
       <main className="main_container">
         <aside className="sidebar">
-          <button onClick={() => setOpenModal(true)}>Add Product</button>
           <p>
             <b>Get all categories:</b>
           </p>
@@ -99,8 +114,6 @@ function Products() {
           <p>
             <b>Sort the results:</b>
           </p>
-          <button onClick={ascOrder}>ASC</button>
-          <button onClick={descOrder}>DESC</button>
           <p>
             <b>Get specific category:</b>
           </p>
@@ -109,28 +122,53 @@ function Products() {
           <button onClick={electronics}>Electronics</button>
           <button onClick={womenClothing}>Women's Clothing</button>
         </aside>
+
         <article className="article">
-          <Modal
-            array={productsArray}
-            open={openModal}
-            onClose={() => setOpenModal(false)}
-          />
-          {data && data.length > 0 ? (
-            data.map((product) => {
-              return (
-                <section className="card_section" key={product.id}>
-                  <img src={product.image} alt="" width="200" height="200" />
-                  <p className="card_title">{product.title}</p>
-                  <p className="card_category">Category: {product.category}</p>
-                  <p className="card_price">Price: Ksh {product.price}</p>
-                  <p className="card_rating">Rating: {product.rating.rate}</p>
-                  <button className="delete" onClick={() => deleteItem(product.id)}>DELETE</button>
-                </section>
-              );
-            })
-          ) : (
-            <h2>No API Response!</h2>
-          )}
+          <nav className="nav-bar">
+            <button className="add-btn" onClick={() => setOpenModal(true)}>
+              Add Product
+            </button>
+            <div className="sort-buttons">
+              <button id="asc" onClick={() => ascOrder(data)}>
+                ASC
+              </button>
+              <button id="desc" onClick={() => descOrder(data)}>
+                DESC
+              </button>
+            </div>
+          </nav>
+          <div className="list">
+            {data && data.length > 0 ? (
+              data.map((product) => {
+                return (
+                  <section className="card_section" key={product.id}>
+                    <div className="card_left">
+                      <img className="card_img" src={product.image} alt="" />
+                    </div>
+                    <div className="card_right">
+                      <p className="card_title">{product.title}</p>
+                      <p className="card_description">{product.description}</p>
+                      <p className="card_category">
+                        Category: {product.category}
+                      </p>
+                      <p className="card_price">Price: Ksh {product.price}</p>
+                      <p className="card_rating">
+                        Rating: {product.rating.rate}
+                      </p>
+                      <button
+                        className="delete_btn"
+                        onClick={() => deleteItem(product.id)}
+                      >
+                        DELETE
+                      </button>
+                    </div>
+                  </section>
+                );
+              })
+            ) : (
+              <h2>No API Response!</h2>
+            )}
+          </div>
         </article>
       </main>
     </div>
