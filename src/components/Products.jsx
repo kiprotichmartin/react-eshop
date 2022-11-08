@@ -1,15 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../App.css";
+import Modal from "./Modal";
 
 function Products() {
   const [data, setData] = useState(null);
+  const [productsArray, setProductsArray] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
 
-  function allProducts() {
+  useEffect(function allProducts() {
     fetch("https://fakestoreapi.com/products/")
       .then((res) => res.json())
       .then((json) => {
         setData(json);
+        setProductsArray(json);
       });
+  }, []);
+
+  // function allProducts() {
+  //   fetch("https://fakestoreapi.com/products/")
+  //     .then((res) => res.json())
+  //     .then((json) => {
+  //       setData(json);
+  //       setProductsArray(json);
+  //     });
+  // }
+
+  function allProducts2() {
+    setData(productsArray);
   }
 
   function ascOrder() {
@@ -60,6 +77,12 @@ function Products() {
       });
   }
 
+  function deleteItem(id) {
+    let newArr = data.filter((item) => item.id !== id);
+    console.log(newArr);
+    setData(newArr);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -67,10 +90,12 @@ function Products() {
       </header>
       <main className="main_container">
         <aside className="sidebar">
+          <button onClick={() => setOpenModal(true)}>Add Product</button>
           <p>
             <b>Get all categories:</b>
           </p>
-          <button onClick={allProducts}>All categories</button>
+          {/* <button onClick={allProducts}>Fetch All categories</button> */}
+          <button onClick={allProducts2}>All categories</button>
           <p>
             <b>Sort the results:</b>
           </p>
@@ -85,6 +110,11 @@ function Products() {
           <button onClick={womenClothing}>Women's Clothing</button>
         </aside>
         <article className="article">
+          <Modal
+            array={productsArray}
+            open={openModal}
+            onClose={() => setOpenModal(false)}
+          />
           {data && data.length > 0 ? (
             data.map((product) => {
               return (
@@ -94,6 +124,7 @@ function Products() {
                   <p className="card_category">Category: {product.category}</p>
                   <p className="card_price">Price: Ksh {product.price}</p>
                   <p className="card_rating">Rating: {product.rating.rate}</p>
+                  <button className="delete" onClick={() => deleteItem(product.id)}>DELETE</button>
                 </section>
               );
             })
