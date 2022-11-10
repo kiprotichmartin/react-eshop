@@ -18,71 +18,55 @@ function Products() {
 
   useEffect(allProducts, []);
 
-  async function allProducts2() {
-    await setData(productsArray);
+  function allProducts2() {
+    setData(productsArray);
     console.log(data);
   }
 
-  async function ascOrder(data) {
+  function ascOrder(data) {
     let newArr = data.sort((a, b) => {
       return a.id - b.id;
     });
-    await setData(newArr);
+    setData(newArr);
     console.log(newArr);
   }
 
-  async function descOrder(data) {
+  function descOrder(data) {
     let newArr = data.sort((a, b) => {
       return b.id - a.id;
     });
-    await setData(newArr);
+    setData(newArr);
     console.log(newArr);
   }
 
   function menClothing() {
-    // allProducts2();
     let newArr = productsArray.filter(
       (item) => item.category === "men's clothing"
     );
     setData(newArr);
     console.log(newArr);
-    // ascOrder(newArr);
-    // descOrder(newArr);
   }
 
   function jewelery() {
-    // allProducts2();
     let newArr = productsArray.filter((item) => item.category === "jewelery");
     setData(newArr);
     console.log(newArr);
-    // const asc = document.getElementById('asc');
-    // const desc = document.getElementById('desc');
-    // asc.addEventListener("click", ascOrder(newArr))
-    // desc.addEventListener("click", descOrder(newArr));
-    // ascOrder(newArr);
-    // descOrder(newArr);
   }
 
   function electronics() {
-    // allProducts2();
     let newArr = productsArray.filter(
       (item) => item.category === "electronics"
     );
     setData(newArr);
     console.log(newArr);
-    // ascOrder(newArr);
-    // descOrder(newArr);
   }
 
   function womenClothing() {
-    // allProducts2();
     let newArr = productsArray.filter(
       (item) => item.category === "women's clothing"
     );
     setData(newArr);
     console.log(newArr);
-    // ascOrder(newArr);
-    // descOrder(newArr);
   }
 
   function deleteItem(id) {
@@ -111,9 +95,6 @@ function Products() {
           </p>
           {/* <button onClick={allProducts}>Fetch All categories</button> */}
           <button onClick={allProducts2}>All categories</button>
-          <p>
-            <b>Sort the results:</b>
-          </p>
           <p>
             <b>Get specific category:</b>
           </p>

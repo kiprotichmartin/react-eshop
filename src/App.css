@@ -74,6 +74,11 @@
   display: flex;
 }
 
+.card_left{
+  /* width: 200px; */
+  /* max-height: 200px; */
+}
+
 .card_img {
   display: block;
   width: 200px;

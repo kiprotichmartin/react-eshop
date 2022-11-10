@@ -47,7 +47,7 @@ function Modal({ open, onClose, array }) {
         <label for="title">Title:</label>
         <input ref={title} type="text" name="title" />
 
-        <label for="descr">Desprition:</label>
+        <label for="descr">Description:</label>
         <input ref={description} type="text" name="descr" />
 
         <label for="category">Category:</label>
@@ -62,9 +62,9 @@ function Modal({ open, onClose, array }) {
         <input ref={price} type="text" name="price" />
 
         <label for="image">Image:</label>
-        <input ref={image} type="text" name="image" />
+        <input ref={image} type="url" name="image" />
 
-        <label for="image">Rating:</label>
+        <label for="rating">Rating:</label>
         <input ref={rate} type="number" name="rating" />
         <div className="action-buttons">
           <button className="submit-btn" type="submit">
